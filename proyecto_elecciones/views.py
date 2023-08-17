@@ -3,6 +3,8 @@ from app1.models import Usuario, Candidato, Voto, Lista
 
 def home(request):    
     data={}
+    votos = Voto.objects.all()
+    data["votos"] = votos
     return render(request, "home.html",data)
 
 def login(request):
@@ -15,8 +17,7 @@ def login(request):
         data["usuario"] = usuario
         return render(request, 'eleccion.html', data)
     except Usuario.DoesNotExist:        
-        data["mensaje"] = "Usuario no encontrado. Verifica la cédula ingresada."
-        return render(request, 'home.html', data)
+        return redirect("home")
     
 def confirmarVoto(request,id, cedula):
     candidato = Candidato.objects.get(pk=id)

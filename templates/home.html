@@ -20,4 +20,28 @@
     </div>
   </div>
 </div>
+<hr>
+  <h3>Historial de Votos</h3>
+    <div class="card" style="width: 50rem;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID Voto</th>
+            <th scope="col">Cedula del votante</th>
+            <th scope="col">Candidato Elegido</th>
+          </tr>
+        </thead>
+          <tbody> 
+            {% for voto in votos %}
+              <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                  <td>{{voto.id}}</td>
+                  <td>{{voto.cedula_votante.cedula}}</td>
+                  <td>{{voto.nombre_candidato.nombre}}</td>                                               
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>            
+    </div>        
 {% endblock contenido %}
