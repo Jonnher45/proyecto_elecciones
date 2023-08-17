@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<div class="card text-center mt-5" >
+    <div class="card-header">
+      Bienvenido <strong id="usuario" data-usuario={{usuario.cedula}}>{{usuario.nombre}}</strong>. Seleccione su candidato.
+    </div>
+    <!--<img src="..." class="card-img-top" alt="...">-->    
+    <div class="card-body">
+      <h3 class="card-title my-4">ELECCIONES</h3>    
+      <form action="{% url 'login' %}" method="POST"> 
+        {% csrf_token %}
+        <div class="container">
+            <div class="row align-items-start">
+                {% for candidato in candidatos %}                
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Opción #{{forloop.counter}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{candidato.nombre}}</td>
+                          </tr>
+                          <tr>
+                            <td>{{candidato.lista.nombre_lista}}</td>
+                          </tr>
+                          <tr>
+                            
+                            <td><img src="{{candidato.foto.url}}" height="100"> </td>
+                          </tr>
+                          <tr>
+                            <td>Presidente</td>
+                          </tr>
+                          <td>
+                            <a href="#" data-id="{{candidato.id}}" data-word="{{candidato.nombre}}" class="btn btn-danger btnSeleccion" data-bs-toggle="modal" data-bs-target="#exampleModal">Elegir</a>
+                          </td>
+                        </tbody>                        
+                      </table>
+                </div>        
+                {% endfor %}                
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel{{palabra.id}}">¿Está Seguro?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+      <div class="modal-body">
+        <p id="texto-modal"></p>
+      </div>
+      <div class="modal-footer">
+        <a id="btnEnlace" type="button" class="btn btn-danger">Registrar Voto</a>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    const btnSeleccion = document.querySelectorAll(".btnSeleccion");
+    const btnEnlace = document.getElementById("btnEnlace");
+    const pModal = document.getElementById("texto-modal");
+    const etiquetaUsuario = document.getElementById("usuario");
+    btnSeleccion.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const confirmacion = btn.getAttribute("data-id");
+        const nombreCandidato = btn.getAttribute("data-word");
+        const cedula = etiquetaUsuario.getAttribute("data-usuario");
+        const url = `/confirmarVoto/${confirmacion}/${cedula}`;
+        btnEnlace.href = url;
+        pModal.innerHTML = `¿Está seguro de realizar su voto por <strong>${nombreCandidato}.</strong>?`;
+        e.preventDefault();
+      });
+    });
+  </script>
+{% endblock contenido %}

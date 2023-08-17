@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<div class="container pt-5" style="width: 50%">
+<div class="card text-center" >
+    <div class="card-header">
+      Sistema de Elecciones
+    </div>
+    <!--<img src="..." class="card-img-top" alt="...">-->    
+    <div class="card-body">
+      <h3 class="card-title my-4">ELECCIONES</h3>    
+      <form action="{% url 'login' %}" method="POST"> 
+        {% csrf_token %} 
+        <div class="form-group my-4">          
+          <input type="text" id="txtCedula" name="txtCedula" class="form-control" placeholder="Ingrese con su cédula" maxlength="10" required />
+          <p style="color: red">{{mensaje}} </p>
+        </div>
+        <button type="submit" class="btn btn-success btn-block text-white my-4">Ingresar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock contenido %}
